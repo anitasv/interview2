@@ -12,11 +12,16 @@ public class Args {
     public static Args parse(String[] args) {
         Map<String, String> argMap = new HashMap<>();
         for (String arg : args) {
+            if (!arg.startsWith("--")) {
+                continue;
+            }
             int equals = arg.indexOf('=');
             if (equals != -1) {
-                String key = arg.substring(0, equals);
+                String key = arg.substring(2, equals);
                 String value = arg.substring(equals + 1);
                 argMap.put(key, value);
+            } else {
+                argMap.put(arg.substring(2), "");
             }
         }
         return new Args(argMap);
