@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MergeUtils {
+public class Scanner {
 
     public static List<ScanResult> scanDir(Path modelDir) {
         List<ScanResult> internal = new ArrayList<>();

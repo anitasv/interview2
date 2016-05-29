@@ -21,10 +21,9 @@ public class MergeMain {
         boolean overwrite = parsed.getBoolean("overwrite", false);
 
         Path modelDir = Paths.get(modelDirArg);
-        Model model = Model.buildModel(modelDir);
+        Model model = Model.create(modelDir);
 
         Path srcDir = Paths.get(sourceDirArg);
-
         Matching matching = Matching.create(model, srcDir, skipMismatch);
 
         Map<Path, ModelVal> matched = matching.getMatched();
@@ -38,9 +37,7 @@ public class MergeMain {
             Path targetDir = targetPath.getParent();
             File targetDirFile = targetDir.toFile();
             if (targetDirFile.exists()) {
-                if (targetDirFile.isDirectory()) {
-                    /* all good */
-                } else {
+                if (!targetDirFile.isDirectory()) {
                     System.err.println("Target is not a directory: " + targetDir);
                     continue;
                 }
@@ -72,7 +69,7 @@ public class MergeMain {
         for (Map.Entry<Path, ModelVal> entry : matched.entrySet()) {
             Path target = entry.getValue().getTarget();
             Path project = target.getName(0).resolve(target.getName(1));
-            Path typeDir = entry.getValue().getFileType().getPath();
+            Path typeDir = entry.getValue().getFileType();
             if (typeDir == null) {
                 System.err.println("Internal type error: " + entry.getValue().getFileType());
             }

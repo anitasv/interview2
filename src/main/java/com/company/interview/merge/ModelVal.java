@@ -7,7 +7,7 @@ import java.nio.file.Path;
 @Data
 public class ModelVal {
 
-    private final FileType fileType;
+    private final Path fileType;
 
     private final boolean directory;
 

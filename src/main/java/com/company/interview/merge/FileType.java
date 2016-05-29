@@ -1,20 +1,11 @@
 package com.company.interview.merge;
 
-import lombok.Getter;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Getter
-public enum FileType {
-    MAIN_JAVA(Paths.get("main", "java")),
-    MAIN_RESOURCE(Paths.get("main", "resources")),
-    TEST_JAVA(Paths.get("test", "java")),
-    TEST_RESOURCE(Paths.get("test", "resources"));
-
-    private final Path path;
-
-    FileType(Path path) {
-        this.path = path;
-    }
+public interface FileType {
+    Path MAIN_JAVA = Paths.get("main", "java");
+    Path MAIN_RESOURCE = Paths.get("main", "resources");
+    Path TEST_JAVA = Paths.get("test", "java");
+    Path TEST_RESOURCE = Paths.get("test", "resources");
 }

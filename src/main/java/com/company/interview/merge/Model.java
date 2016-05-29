@@ -53,8 +53,8 @@ public class Model {
         return bestCand;
     }
 
-    public static Model buildModel(Path modelDir) {
-        List<ScanResult> internal = MergeUtils.scanDir(modelDir);
+    public static Model create(Path modelDir) {
+        List<ScanResult> internal = Scanner.scanDir(modelDir);
 
         Map<Path, List<ModelVal>> internalMap = convertToModelMap(modelDir, internal);
 
@@ -69,11 +69,8 @@ public class Model {
             if (relativePath.getNameCount() < 2) {
                 continue;
             }
-            if (relativePath.endsWith(".settings")) {
-                continue;
-            }
             Path typeName = relativePath.getName(1);
-            FileType fileType = null;
+            Path fileType = null;
             switch (typeName.toString()) {
                 case "src" : fileType = FileType.MAIN_JAVA; break;
                 case "src.resources" : fileType = FileType.MAIN_RESOURCE; break;

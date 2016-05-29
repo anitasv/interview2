@@ -14,7 +14,7 @@ public class Matching {
         sourceMap.computeIfAbsent(target, (x) -> new HashSet<>()).add(src);
     }
 
-    public boolean checkConflicts() {
+    private boolean checkConflicts() {
         boolean success = true;
         for (Map.Entry<Path, Set<ModelVal>> entry : targetMap.entrySet()) {
             if (entry.getValue().size() > 1) {
@@ -42,7 +42,7 @@ public class Matching {
     }
 
     public static Matching create(Model model, Path srcDir, boolean skipMismatch) {
-        List<ScanResult> srcFiles = MergeUtils.scanDir(srcDir);
+        List<ScanResult> srcFiles = Scanner.scanDir(srcDir);
         Matching matching = new Matching();
         boolean success = true;
         for (ScanResult scanResult : srcFiles) {

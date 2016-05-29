@@ -5,9 +5,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by anita on 29-May-16.
- */
 @RequiredArgsConstructor
 public class Args {
     private final Map<String, String> argMap;
@@ -25,11 +22,11 @@ public class Args {
         return new Args(argMap);
     }
 
-    String getString(String key, String defaultValue) {
+    public String getString(String key, String defaultValue) {
         return argMap.getOrDefault(key, defaultValue);
     }
 
-    boolean getBoolean(String key, boolean defaultValue) {
+    public boolean getBoolean(String key, boolean defaultValue) {
         String val = argMap.get(key);
         if (val == null) {
             return defaultValue;
