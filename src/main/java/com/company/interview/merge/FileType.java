@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 public enum FileType {
     MAIN_JAVA(Paths.get("main", "java")),
     MAIN_RESOURCE(Paths.get("main", "resources")),
-    TEST_JAVA(Paths.get("test", "resources")),
+    TEST_JAVA(Paths.get("test", "java")),
     TEST_RESOURCE(Paths.get("test", "resources"));
 
     private final Path path;
