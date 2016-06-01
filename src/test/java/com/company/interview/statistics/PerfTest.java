@@ -14,11 +14,12 @@ public class PerfTest {
         loadTest(executor, new CasStatistic());
         loadTest(executor, new SynchStatistic());
         loadTest(executor, new AccStatistic());
-        loadTest(executor, new FastStatistic());
         loadTest(executor, new UnsafeStatistic());
         loadTest(executor, new SafeStatistic());
         loadTest(executor, new Acc2Statistic());
+        loadTest(executor, new FastFloatStatistic());
         loadTest(executor, new Fast2Statistic());
+        loadTest(executor, new FastStatistic());
     }
 
     public static void loadTest(Executor executor, Statistic statistic) throws InterruptedException {

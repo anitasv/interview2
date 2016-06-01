@@ -64,4 +64,14 @@ public class StandardTest {
     public void testFast2() {
         check(new Fast2Statistic());
     }
+
+    @Test
+    public void testFloat() {
+        check(new FloatStatistic());
+    }
+
+    @Test
+    public void testFastFloat() {
+        check(new FastFloatStatistic());
+    }
 }
