@@ -34,5 +34,9 @@ public class IterablesTest {
         for (String k : cross) {
             System.out.println(k);
         }
+
+        for (int k : Iterables.range(0, 10)) {
+            System.out.println(k);
+        }
     }
 }

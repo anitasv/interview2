@@ -223,8 +223,9 @@ public class ExpressionSearch {
                                       BinaryOperator<Double> op,
                                       UnaryOperator<Double> inverse,
                                       BinaryOperator<Double> partialInverse) {
-        Iterable<Expr> ret = Collections.emptyList();
-        for (int i = 1; 2 * i <= len; i++) {
+        return flatmap(range(1, 1 + len / 2), (i) -> {
+            Iterable<Expr> ret = Collections.emptyList();
+
             int j = len - i;
             Iterable<Expr> leftCandidates = generate(i, op);
             Iterable<Expr> rightCandidates = generate(j, null);
@@ -233,19 +234,15 @@ public class ExpressionSearch {
 
             ret = concat(ret, result1);
 
-//            Iterable<Expr> leftInverse = map(leftCandidates, (e) -> new UnaryExpression(e, inverse));
-
             Iterable<Expr> result2 = cross(rightCandidates, leftCandidates, (e1, e2) -> new BinaryExpression(e1, e2, partialInverse));
 
             ret = concat(ret, result2);
 
-//            Iterable<Expr> rightInverse = map(rightCandidates, (e) -> new UnaryExpression(e, inverse));
-
             Iterable<Expr> result3 = cross(leftCandidates, rightCandidates, (e1, e2) -> new BinaryExpression(e1, e2, partialInverse));
 
             ret = concat(ret, result3);
-        }
-        return ret;
+            return ret;
+        });
     }
 
     public static Iterable<Expr> generate(int len, BinaryOperator<Double> ban) {
@@ -273,7 +270,7 @@ public class ExpressionSearch {
 //        }
 
         Iterable<Expr> solns = Collections.emptyList();
-        for (int n = 1; n <= 12; n++) {
+        for (int n = 1; n <= 20; n++) {
             solns = concat(solns, generate(n, null));
         }
 
