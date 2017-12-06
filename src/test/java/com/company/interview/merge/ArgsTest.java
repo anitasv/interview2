@@ -4,9 +4,6 @@ import org.testng.annotations.Test;
 
 import static org.testng.AssertJUnit.assertEquals;
 
-/**
- * Created by anita on 30-May-16.
- */
 public class ArgsTest {
 
     @Test
