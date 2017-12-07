@@ -15,6 +15,16 @@ public class Iterables {
         return new CrossIterable<>(a, b, combine);
     }
 
+    public static <A, B, T>
+    Iterable<T> lexicalCross(Iterable<A> a, Iterable<B> b, BiFunction<A, B, T> combine) {
+        return new LexicalCrossIterable<>(a, b, combine);
+    }
+
+    public static <A, B, T>
+    Iterable<T> lexicalCrossSkip(Iterable<A> a, Iterable<B> b, BiFunction<A, B, T> combine) {
+        return new LexicalCrossIterableWithSkip<>(a, b, combine);
+    }
+
     public static <A, B>
     Iterable<B> map(Iterable<A> a, Function<A, B> mappingFunction) {
         return new MappingIterable<A, B>(a, mappingFunction);

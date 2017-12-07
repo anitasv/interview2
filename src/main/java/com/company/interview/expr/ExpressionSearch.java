@@ -1,6 +1,7 @@
 package com.company.interview.expr;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
 
@@ -208,15 +209,19 @@ public class ExpressionSearch {
     };
 
 
+    private static final Map<Integer, List<Expr>> leafDp = new HashMap<>();
+
     public static List<Expr> terminal(int len) {
-        int nines = 0;
-        for (int i = 0; i < len; i++) {
-            nines *= 10;
-            nines += 9;
-        }
-        List<Expr> ret = new ArrayList<>();
-        ret.add(new Terminal(nines, len));
-        return Collections.unmodifiableList(ret);
+        return leafDp.computeIfAbsent(len, x -> {
+            int nines = 0;
+            for (int i = 0; i < len; i++) {
+                nines *= 10;
+                nines += 9;
+            }
+            List<Expr> list = new ArrayList<>();
+            list.add(new Terminal(nines, len));
+            return Collections.unmodifiableList(list);
+        });
     }
 
     public static Iterable<Expr> deep(int len,
@@ -230,17 +235,33 @@ public class ExpressionSearch {
             Iterable<Expr> leftCandidates = generate(i, op);
             Iterable<Expr> rightCandidates = generate(j, null);
 
-            Iterable<Expr> result1 = cross(leftCandidates, rightCandidates, (e1, e2) -> new BinaryExpression(e1, e2, op));
+            if (i != j) {
+                Iterable<Expr> result1 = cross(leftCandidates, rightCandidates, (e1, e2) -> new BinaryExpression(e1, e2, op));
 
-            ret = concat(ret, result1);
+                ret = concat(ret, result1);
 
-            Iterable<Expr> result2 = cross(rightCandidates, leftCandidates, (e1, e2) -> new BinaryExpression(e1, e2, partialInverse));
+                Iterable<Expr> result2 = cross(rightCandidates, leftCandidates, (e1, e2) -> new BinaryExpression(e1, e2, partialInverse));
 
-            ret = concat(ret, result2);
+                ret = concat(ret, result2);
 
-            Iterable<Expr> result3 = cross(leftCandidates, rightCandidates, (e1, e2) -> new BinaryExpression(e1, e2, partialInverse));
+                Iterable<Expr> result3 = cross(leftCandidates, rightCandidates, (e1, e2) -> new BinaryExpression(e1, e2, partialInverse));
 
-            ret = concat(ret, result3);
+                ret = concat(ret, result3);
+
+            } else {
+                Iterable<Expr> result1 = lexicalCross(leftCandidates, rightCandidates, (e1, e2) -> new BinaryExpression(e1, e2, op));
+
+                ret = concat(ret, result1);
+
+                Iterable<Expr> result2 = lexicalCross(leftCandidates, rightCandidates, (e1, e2) -> new BinaryExpression(e2, e1, partialInverse));
+
+                ret = concat(ret, result2);
+
+                Iterable<Expr> result3 = lexicalCrossSkip(leftCandidates, rightCandidates, (e1, e2) -> new BinaryExpression(e1, e2, partialInverse));
+
+                ret = concat(ret, result3);
+            }
+
             return ret;
         });
     }
@@ -275,6 +296,7 @@ public class ExpressionSearch {
         }
 
         Map<Integer, Expr> hasFound = new HashMap<>();
+        long startTime = System.nanoTime();
 
         int located = 0;
         int maxSoFar = 0;
@@ -288,7 +310,10 @@ public class ExpressionSearch {
                         Expr match = hasFound.get(located + 1);
                         if (match.size() > maxSoFar) {
                             maxSoFar = match.size();
-                            System.out.println((located + 1) + "\t" + match.size() + "\t" + match);
+                            long endTime = System.nanoTime();
+                            long duration = endTime - startTime;
+                            long seconds = TimeUnit.NANOSECONDS.toSeconds(duration);
+                            System.out.println((located + 1) + "\t" + match.size() + "\t" + match + "\t" + seconds + " s");
                         }
                         located++;
                     } else {
