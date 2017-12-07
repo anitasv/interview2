@@ -290,10 +290,7 @@ public class ExpressionSearch {
 //            }
 //        }
 
-        Iterable<Expr> solns = Collections.emptyList();
-        for (int n = 1; n <= 20; n++) {
-            solns = concat(solns, generate(n, null));
-        }
+        Iterable<Expr> solns = flatmap(Iterables.range(1, 100), (n) -> generate(n, null));
 
         Map<Integer, Expr> hasFound = new HashMap<>();
         long startTime = System.nanoTime();
